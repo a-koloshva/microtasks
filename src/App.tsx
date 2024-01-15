@@ -1,112 +1,100 @@
 import React, { useState } from 'react';
 import './App.css';
-import { FullInput } from './components/FullInput';
-import { Input } from './components/Input';
-import { Button } from './components/Button';
+import { Todolist } from './Todolist';
+import { v1 } from 'uuid';
+
+export type todolistsType = {
+  id: string;
+  title: string;
+  filter: FilterValuesType;
+};
+
+export type FilterValuesType = 'all' | 'active' | 'completed';
 
 function App() {
-  const [message, setMessage] = useState([
-    { message: 'message1' },
-    { message: 'message2' },
-    { message: 'message3' },
-    { message: 'message4' },
-    { message: 'message5' },
+  // let [tasks, setTasks] = useState([
+  //     {id: v1(), title: "HTML&CSS", isDone: true},
+  //     {id: v1(), title: "JS", isDone: true},
+  //     {id: v1(), title: "ReactJS", isDone: false},
+  //     {id: v1(), title: "Rest API", isDone: false},
+  //     {id: v1(), title: "GraphQL", isDone: false},
+  // ]);
+  // let [filter, setFilter] = useState<FilterValuesType>("all");
+
+  let todolistID1 = v1();
+  let todolistID2 = v1();
+
+  let [todolists, setTodolists] = useState<Array<todolistsType>>([
+    { id: todolistID1, title: 'What to learn', filter: 'all' },
+    { id: todolistID2, title: 'What to buy', filter: 'all' },
   ]);
 
-  const addMessage = (title: string) => {
-    let newMessage = { message: title };
-    setMessage([newMessage, ...message]);
-  };
+  let [tasks, setTasks] = useState({
+    [todolistID1]: [
+      { id: v1(), title: 'HTML&CSS', isDone: true },
+      { id: v1(), title: 'JS', isDone: true },
+      { id: v1(), title: 'ReactJS', isDone: false },
+      { id: v1(), title: 'Rest API', isDone: false },
+      { id: v1(), title: 'GraphQL', isDone: false },
+    ],
+    [todolistID2]: [
+      { id: v1(), title: 'HTML&CSS2', isDone: true },
+      { id: v1(), title: 'JS2', isDone: true },
+      { id: v1(), title: 'ReactJS2', isDone: false },
+      { id: v1(), title: 'Rest API2', isDone: false },
+      { id: v1(), title: 'GraphQL2', isDone: false },
+    ],
+  });
 
-  const callBackButtonHandler = () => {
-    addMessage(title);
-    setTitle('');
-  };
+  function removeTask(id: string) {
+    // let filteredTasks = tasks.filter((t) => t.id !== id);
+    // setTasks(filteredTasks);
+  }
 
-  let [title, setTitle] = useState('');
+  function addTask(title: string) {
+    // let task = { id: v1(), title: title, isDone: false };
+    // let newTasks = [task, ...tasks];
+    // setTasks(newTasks);
+  }
+
+  function changeStatus(taskId: string, isDone: boolean) {
+    // let task = tasks.find((t) => t.id === taskId);
+    // if (task) {
+    //   task.isDone = isDone;
+    // }
+    // setTasks([...tasks]);
+  }
+
+  //   if (filter === 'active') {
+  //     tasksForTodolist = tasks.filter((t) => t.isDone === false);
+  //   }
+  //   if (filter === 'completed') {
+  //     tasksForTodolist = tasks.filter((t) => t.isDone === true);
+  //   }
+
+  function changeFilter(value: FilterValuesType) {
+    // setFilter(value);
+  }
 
   return (
     <div className="App">
-      {/* <div>
-        <input />
-        <button>+</button>
-      </div> */}
-      {/* <FullInput addMessage={addMessage} /> */}
+      {todolists.map((mapTodolist) => {
+        let tasksForTodolist = tasks[mapTodolist.id];
 
-      <Input title={title} setTitle={setTitle} />
-      <Button name={'+'} callBack={callBackButtonHandler} />
-      {message.map((el, index) => {
-        return <div key={index}>{el.message}</div>;
+        return (
+          <Todolist
+            title={mapTodolist.title}
+            tasks={tasksForTodolist}
+            removeTask={removeTask}
+            changeFilter={changeFilter}
+            addTask={addTask}
+            changeTaskStatus={changeStatus}
+            filter={mapTodolist.filter}
+          />
+        );
       })}
     </div>
   );
 }
 
 export default App;
-
-// import React, { useState } from 'react';
-// import './App.css';
-// import { TopCars } from './components/TopCars/TopCars';
-// import { Money } from './components/Money';
-
-// const topCars = [
-//   { manufacturer: 'BMW', model: 'm5cs' },
-//   { manufacturer: 'Mercedes', model: 'e63s' },
-//   { manufacturer: 'Audi', model: 'rs6' },
-// ];
-
-// type FilterType = 'all' | 'Dollars' | 'RUBLS';
-
-// function App() {
-//   // let [a, setA] = useState(1);
-//   // // let a = 1;
-
-//   // const onClickHandler = () => {
-//   //   setA(++a);
-//   //   console.log(a);
-//   // };
-
-//   // const onClickClear = () => {
-//   //   setA(0);
-//   // };
-
-//   const [money, setMoney] = useState([
-//     { banknots: 'Dollars', value: 100, number: ' a1234567890' },
-//     { banknots: 'Dollars', value: 50, number: ' z1234567890' },
-//     { banknots: 'RUBLS', value: 100, number: ' w1234567890' },
-//     { banknots: 'Dollars', value: 100, number: ' e1234567890' },
-//     { banknots: 'Dollars', value: 50, number: ' c1234567890' },
-//     { banknots: 'RUBLS', value: 100, number: ' r1234567890' },
-//     { banknots: 'Dollars', value: 50, number: ' x1234567890' },
-//     { banknots: 'RUBLS', value: 50, number: ' v1234567890' },
-//   ]);
-
-//   // let currentMoney = money.filter((filteredMoney) => filteredMoney.banknots === 'RUBLS');
-
-//   let currentMoney = money;
-
-//   const [filter, setFilter] = useState<FilterType>('all');
-
-//   if (filter === 'RUBLS') {
-//     currentMoney = money.filter((filteredMoney) => filteredMoney.banknots === 'RUBLS');
-//   }
-//   if (filter === 'Dollars') {
-//     currentMoney = money.filter((filteredMoney) => filteredMoney.banknots === 'Dollars');
-//   }
-
-//   const onClickFilterHandler = (nameButton: FilterType) => {
-//     setFilter(nameButton);
-//   };
-
-//   return (
-//     <div className="App">
-//       {/* <TopCars topCars={topCars} /> */}
-//       {/* <h1>{a}</h1>
-//       <button onClick={onClickHandler}>click</button>
-//       <button onClick={onClickClear}>clear</button> */}
-//       <Money currentMoney={currentMoney} onClickFilterHandler={onClickFilterHandler} />
-//     </div>
-//   );
-// }
-
-// export default App;
