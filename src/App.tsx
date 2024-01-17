@@ -19,7 +19,7 @@ function App() {
   //     {id: v1(), title: "Rest API", isDone: false},
   //     {id: v1(), title: "GraphQL", isDone: false},
   // ]);
-  // let [filter, setFilter] = useState<FilterValuesType>("all");
+  //   let [filter, setFilter] = useState<FilterValuesType>('all');
 
   let todolistID1 = v1();
   let todolistID2 = v1();
@@ -46,18 +46,24 @@ function App() {
     ],
   });
 
-  function removeTask(id: string) {
+  function removeTask(todolistID: string, id: string) {
+    setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter((t) => t.id !== id) });
     // let filteredTasks = tasks.filter((t) => t.id !== id);
     // setTasks(filteredTasks);
   }
 
-  function addTask(title: string) {
-    // let task = { id: v1(), title: title, isDone: false };
-    // let newTasks = [task, ...tasks];
+  function addTask(todolistID: string, title: string) {
+    let newTask = { id: v1(), title: title, isDone: false };
+    setTasks({ ...tasks, [todolistID]: [newTask, ...tasks[todolistID]] });
     // setTasks(newTasks);
   }
 
-  function changeStatus(taskId: string, isDone: boolean) {
+  function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
+    // let task = [todolistID]: [...tasks[todolistID].find((t)=>t.id === taskId)]
+    setTasks({
+      ...tasks,
+      [todolistID]: tasks[todolistID].map((t) => (t.id === taskId ? { ...t, isDone: isDone } : t)),
+    });
     // let task = tasks.find((t) => t.id === taskId);
     // if (task) {
     //   task.isDone = isDone;
@@ -65,15 +71,12 @@ function App() {
     // setTasks([...tasks]);
   }
 
-  //   if (filter === 'active') {
-  //     tasksForTodolist = tasks.filter((t) => t.isDone === false);
-  //   }
-  //   if (filter === 'completed') {
-  //     tasksForTodolist = tasks.filter((t) => t.isDone === true);
-  //   }
-
-  function changeFilter(value: FilterValuesType) {
-    // setFilter(value);
+  function changeFilter(todolistID: string, value: FilterValuesType) {
+    setTodolists(
+      todolists.map((filtered) =>
+        filtered.id === todolistID ? { ...filtered, filter: value } : filtered,
+      ),
+    );
   }
 
   return (
@@ -81,8 +84,17 @@ function App() {
       {todolists.map((mapTodolist) => {
         let tasksForTodolist = tasks[mapTodolist.id];
 
+        if (mapTodolist.filter === 'active') {
+          tasksForTodolist = tasksForTodolist.filter((t) => t.isDone === false);
+        }
+        if (mapTodolist.filter === 'completed') {
+          tasksForTodolist = tasksForTodolist.filter((t) => t.isDone === true);
+        }
+
         return (
           <Todolist
+            key={mapTodolist.id}
+            todolistID={mapTodolist.id}
             title={mapTodolist.title}
             tasks={tasksForTodolist}
             removeTask={removeTask}
