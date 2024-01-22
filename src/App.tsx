@@ -12,15 +12,6 @@ export type todolistsType = {
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 function App() {
-  // let [tasks, setTasks] = useState([
-  //     {id: v1(), title: "HTML&CSS", isDone: true},
-  //     {id: v1(), title: "JS", isDone: true},
-  //     {id: v1(), title: "ReactJS", isDone: false},
-  //     {id: v1(), title: "Rest API", isDone: false},
-  //     {id: v1(), title: "GraphQL", isDone: false},
-  // ]);
-  //   let [filter, setFilter] = useState<FilterValuesType>('all');
-
   let todolistID1 = v1();
   let todolistID2 = v1();
 
@@ -46,35 +37,42 @@ function App() {
     ],
   });
 
+  let obj = { id: todolistID1, title: 'What to learn', filter: 'all' };
+  console.log({ ...obj, filter: '123123' });
+
+  // function removeTask(todolistID: string, id: string) {
+  //   setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter((t) => t.id !== id) });
+  // }
+
   function removeTask(todolistID: string, id: string) {
-    setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter((t) => t.id !== id) });
-    // let filteredTasks = tasks.filter((t) => t.id !== id);
-    // setTasks(filteredTasks);
+    console.log(tasks[todolistID]);
   }
 
   function addTask(todolistID: string, title: string) {
     let newTask = { id: v1(), title: title, isDone: false };
     setTasks({ ...tasks, [todolistID]: [newTask, ...tasks[todolistID]] });
-    // setTasks(newTasks);
   }
 
   function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
-    // let task = [todolistID]: [...tasks[todolistID].find((t)=>t.id === taskId)]
     setTasks({
       ...tasks,
       [todolistID]: tasks[todolistID].map((t) => (t.id === taskId ? { ...t, isDone: isDone } : t)),
     });
-    // let task = tasks.find((t) => t.id === taskId);
-    // if (task) {
-    //   task.isDone = isDone;
-    // }
-    // setTasks([...tasks]);
   }
 
+  // function changeFilter(todolistID: string, value: FilterValuesType) {
+  //   setTodolists(
+  //     todolists.map((filtered) =>
+  //       filtered.id === todolistID ? { ...filtered, filter: value } : filtered,
+  //     ),
+  //   );
+  // }
+
   function changeFilter(todolistID: string, value: FilterValuesType) {
-    setTodolists(
-      todolists.map((filtered) =>
-        filtered.id === todolistID ? { ...filtered, filter: value } : filtered,
+    // console.log([...todolists, todolists.map((todolist)=>todolist.id===todolistID ? {...todolist, filter: value} : todolist));
+    console.log(
+      todolists.map((todolist) =>
+        todolist.id === todolistID ? { ...todolist, filter: value } : todolist,
       ),
     );
   }
