@@ -1,5 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { FilterValuesType } from './App';
+// import { FilterValuesType } from './App';
+
+type FilterValuesType = {};
 
 type TaskType = {
   id: string;
